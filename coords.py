@@ -26,7 +26,7 @@ def queryApi(postcodesList):
    # query the api to get lat & lon for each postcode, supply postcodes list in a json
     r = requests.post("http://api.postcodes.io/postcodes", json={"postcodes": postcodesList})
     #print(r.json())
-    print(json.dumps(r.json().get("result")[:5], indent=4, sort_keys=True))  
+#    print(json.dumps(r.json().get("result")[:5], indent=4, sort_keys=True))  
     #get result list from api response 
     return r.json().get("result") 
        

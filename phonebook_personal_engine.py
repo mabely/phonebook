@@ -29,7 +29,7 @@ def create_table():
 create_table()
 
 #"with" creates a temporary resource access and closes it after "with" ends
-with open("personal_database_json.js") as f:
+with open("mock_data_people.json") as f:
     data = json.load(f)
 #pprint(data)
     

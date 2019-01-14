@@ -21,7 +21,7 @@ def create_table():
     
 create_table()
 
-with open("business_database_json.js") as f:
+with open("mock_data_business.json") as f:
     data = json.load(f)
 #pprint(data)
     
@@ -33,7 +33,7 @@ def business_data_entry():
         
 #        method2
         c.execute('''INSERT INTO phonebook_business(business_name, addressline1, addressline2, addressline3, postcode, country, telephone_number, business_type) VALUES(?, ?, ?, ?, ?, ?, ?, ?)''',
-                  (item["business name"], item["address_line_1"], item["address_line_2"], item['address_line_3'],
+                  (item["business_name"], item["address_line_1"], item["address_line_2"], item['address_line_3'],
                    item['postcode'],item['country'], item['telephone_number'], item['business_category']))
 
         conn.commit()
