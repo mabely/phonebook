@@ -29,7 +29,16 @@ def queryApi(postcodesList):
 #    print(json.dumps(r.json().get("result")[:5], indent=4, sort_keys=True))  
     #get result list from api response 
     return r.json().get("result") 
-       
+
+def currentLocation():
+    inputLocation = input("What's your current location? ")    
+    inputLocation = inputLocation.replace(" ", "")
+    r = requests.get(f"http://api.postcodes.io/postcodes/{inputLocation}")
+    lat = r.json().get("result")["latitude"]
+    lon = r.json().get("result")["longitude"]
+    print(lon, lat)
+
+currentLocation()
 
 def updateLonLat(tableName, postcode, latitude, longitude):
     c.execute(f'''UPDATE {tableName}
