@@ -2,6 +2,7 @@ import sqlite3
 import json 
 import requests
 from phonebook_personal_engine import get_db
+from sort import *
 
 #connects to db
 conn = sqlite3.connect("phonebook_database.db")
@@ -43,14 +44,17 @@ def search_p():
     '''))
     try:
         if search_options_p == 1:
-            searchLocNameP()
+            returned_results = searchLocNameP()
+            sort_p(returned_results)
         elif search_options_p == 2:
-            searchPostcodeNameP()
+            returned_results = searchPostcodeNameP()
+            sort_p(returned_results)
         elif search_options_p == 3:
-            searchPostcodeP()
+            returned_results = searchPostcodeP()
+            sort_p(returned_results)
         else:
             print('Sorry we did not recognise that, please try again.)')
-                
+            # search_p()
     except ValueError:
             print('Please type a number.')
             search_p()
@@ -68,21 +72,26 @@ def search_b():
     '''))
     try:
         if search_options_p == 1:
-            searchTypeLocB()
+            returned_results = searchTypeLocB()
+            sort_b(returned_results)
         elif search_options_p == 2:
-            searchNameCityB()
+            returned_results = searchNameCityB()
+            sort_b(returned_results)
         elif search_options_p == 3:
-            searchPostcodeTypeB()
+            returned_results = searchPostcodeTypeB()
+            sort_b(returned_results)
         elif search_options_p == 4:
-            searchPostcodeNameB()
+            returned_results = searchPostcodeNameB()
+            sort_b(returned_results)
         elif search_options_p == 5:
-            searchPostcodesB()
+            returned_results = searchPostcodesB()
+            sort_b(returned_results)
         else:
-            print('Sorry we did not recognise that, please try again.)')
-                
+            print('Sorry we did not recognise that, please try again.')
+            # search_b()
     except ValueError:
-            print('Please type a number.')
-            search_p()
+            print('Please enter a number.')
+            # search_p()
 
 
 ##### PERSON QUERIES #####
@@ -92,26 +101,26 @@ def searchLocNameP():
     location = (input("Provide city: ")).title()
 
     c.execute("SELECT * FROM phonebook_personal WHERE addressline2 = ? and last_name = ? LIMIT 50", (location, name,))
-    
-    # print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchPostcodeNameP():
     name = (input("Provide surname: ")).title()
     postcode = (input("Provide postcode: ")).upper()
 
     c.execute("SELECT * FROM phonebook_personal WHERE postcode = ? and last_name = ? LIMIT 50", (postcode, name,))
-
-    # print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchPostcodeP():
     postcode = (input("Provide postcode: ")).upper()
 
     c.execute("SELECT * FROM phonebook_personal WHERE postcode = ? LIMIT 50", (postcode,))
-
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 ##### BUSINESS QUERIES #####
 
@@ -119,29 +128,33 @@ def searchTypeLocB():
     location = (input("Provide city: ")).title()
     businessType = (input("Provide business type: ")).title()
     c.execute("SELECT * FROM phonebook_business WHERE addressline2 = ? and business_type = ? LIMIT 50", (location, businessType,))
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchNameCityB():
     location = (input("Provide city: ")).title()
     businessName = (input("Provide business name: ")).title()
     c.execute("SELECT * FROM phonebook_business WHERE addressline2 = ? and business_name = ? LIMIT 50", (location, businessName,))
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchPostcodeTypeB():
     postcode = (input("Provide postcode: ")).upper()
     businessType = (input("Provide business type: ")).title()
     c.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_type = ? LIMIT 50", (postcode, businessType,))
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchPostcodeNameB():
     postcode = (input("Provide postcode: ")).upper()
     businessName = (input("Provide business name: ")).title()
     c.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_name = ? LIMIT 50", (postcode, businessName,))
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
 
 def searchPostcodesB():
     postcode = (input("Provide postcode: ")).upper()
@@ -149,8 +162,16 @@ def searchPostcodesB():
 #    return first element of each row to remove tuples from the list
 #    I have now a list of strings instead of list of tuples with strings
     # return [item[0] for item in c.fetchall()]
-    print(c.fetchall())
-    return c.fetchall()
+    returned_results = c.fetchall()
+    print(returned_results)
+    return returned_results
+
+# returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
+def format_results(returned_results):
+    for item in returned_results:
+        print(item,end='\n')
+        
+
 
 main()
 
