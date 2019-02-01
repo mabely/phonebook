@@ -4,6 +4,7 @@ import sqlite3
 import json
 from pprint import pprint 
 
+# This is left the same because unit test works on these functions
 def get_db(db_name):
     try:
         if db_name != "phonebook_database.db":

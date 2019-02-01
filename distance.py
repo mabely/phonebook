@@ -9,14 +9,6 @@ conn = sqlite3.connect("phonebook_database.db")
 #link to db with cursor
 c = conn.cursor()
 
-
-# def getBusinessByType(location, businessType):
-#     businessType = businessType.title()
-#     location = location.upper()
-#     c.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_type = ?", (location, businessType,))
-# #    return c.fetchall()
-#     return [item[8:10] for item in c.fetchall()]
-
 currentLat = 51.486879
 currentLon = -0.091014
 #print(getBusinessByType("EC3M 1AA", "Shoes"))

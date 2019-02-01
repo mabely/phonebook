@@ -3,27 +3,46 @@ import json
 import requests
 from phonebook_personal_engine import get_db
 from sort import *
+from os.path import exists
 
-#connects to db
-conn = sqlite3.connect("phonebook_database.db")
-#link to db with cursor
-c = conn.cursor()
 
 
 def main():
-    # db_name = "phonebook_database.db"
-    # get_db(db_name)
+    # Establishes connection to db
+    db_path = '/Users/Me/Desktop/btfurther/module2/phonebook_project/phonebook_database.db'
+    if check_db(db_path):
+        c, conn = connect_db(db_path)
+        print('connection established')
     menu()
+
+def check_db(db_path):
+    #initializes path to db
+    if exists(db_path):
+        return True
+    else:
+        return False
+
+def connect_db(db_path):
+    try:
+        if check_db(db_path):
+            #connects to db
+            conn = sqlite3.connect("phonebook_database.db")
+            #link to db with cursor
+            c = conn.cursor()
+            return c, conn
+        else:
+            print('Database does not exist.')
+            return False, False
+    except:
+        print('Something went wrong with connecting to database.')
 
 def menu():
     menu_pb = (input('Search for a person or business (P/B)? ')).lower()
     menu_pb = menu_pb.strip()
     try:
-        # menu_pb = menu_pb.lower()
         if menu_pb == 'p':
             search_p()
         elif menu_pb == 'b':
-            # This needs to call the search_b()
             search_b()
         else:
             print('Sorry we did not recognise that, please try again.)')
@@ -99,9 +118,10 @@ def search_b():
 def searchLocNameP():
     name = (input("Provide surname: ")).title()
     location = (input("Provide city: ")).title()
-
+    c, conn = connect_db(db_path)
     c.execute("SELECT * FROM phonebook_personal WHERE addressline2 = ? and last_name = ? LIMIT 50", (location, name,))
     returned_results = c.fetchall()
+    conn.commit()
     print(returned_results)
     return returned_results
 
@@ -170,14 +190,13 @@ def searchPostcodesB():
 def format_results(returned_results):
     for item in returned_results:
         print(item,end='\n')
-        
 
 
 main()
 
-
-#closing cursor
-c.close()
-#closing connection to db
-conn.close()
+# def close_db(db_path):
+#     #closing cursor
+# c.close()
+# #closing connection to db
+# conn.close()
 
