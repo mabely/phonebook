@@ -59,7 +59,6 @@ def sortCity(returned_results):
   
 
 # BUSINESS
-
 def sort_b(returned_results):
     sort_yn = (input('''Do you want to sort? (y/n) ''')).lower()
     try:
@@ -120,12 +119,6 @@ def sortPostcode2(returned_results):
     y = sorted(x, key=lambda s:s[4])
     print(format_results(y))
     return y
-
-
-# returned_results = ('Kimia', '61 Lindbergh Street', 'Birmingham', 'England', 'B41 1NT', 'United Kingdom', '0862 535 3144', 'Electronics', None, None), ('Dynazzy', '2 La Follette Road', 'Burmingham', 'England', 'B40 1NT', 'United Kingdom', '0123 473 8784', 'Kids', None, None), ('Divavu', '56316 Anderson Road', 'Birmingham', 'England', 'B40 1NT', 'United Kingdom', '0957 844 1467', 'Jewelery', None, None)
-
-# sort_p(returned_results)
-# sort_b(returned_results)
 
 def sortDistance(returned_results):
     coords = currentLocation()

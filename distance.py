@@ -3,14 +3,6 @@ import json
 import requests
 from math import pi, sin, cos, sqrt, atan2
 
-
-# def getBusinessByType(location, businessType):
-#     businessType = businessType.title()
-#     location = location.upper()
-#     c.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_type = ?", (location, businessType,))
-# #    return c.fetchall()
-#     return [item[8:10] for item in c.fetchall()]
-
 #currentLat = 51.486879
 #currentLon = -0.091014
 #print(getBusinessByType("EC3M 1AA", "Shoes"))
@@ -31,9 +23,3 @@ def distance(lat1, lng1, lat2, lng2):
     return round(radius * ang,2)
 
 #print(distance(currentLat, currentLon, lat1, lng1),"km")
-
-
-##closing cursor
-#c.close()
-##closing connection to db
-#conn.close()
