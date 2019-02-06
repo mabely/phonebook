@@ -6,9 +6,7 @@ def get_db(db_name):
     try:
         if db_name != "phonebook_database.db":
             raise OSError('Wrong database name')
-        #connects to db
         conn = sqlite3.connect(db_name)
-        #link to db with cursor
         c = conn.cursor()
         # print('Done')
         return c, conn

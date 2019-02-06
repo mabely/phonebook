@@ -6,7 +6,6 @@ def menu(cursor):
     menu_pb = (input('Search for a person or business (P/B)? ')).lower()
     menu_pb = menu_pb.strip()
     try:
-        # menu_pb = menu_pb.lower()
         if menu_pb == 'p':
             search_p(cursor)
         elif menu_pb == 'b':
@@ -41,7 +40,6 @@ def search_p(cursor):
             returned_results = searchPostcodeP(cursor)
         else:
             print('Sorry we did not recognise that, please try again.')
-#            search_p() -- this needs to be modified due to "invalid literal for int() with base 10" response
         
         if returned_results is None: 
             #all search functions can return None for no search results, we want user to search again
@@ -94,7 +92,6 @@ def correct_postcode(postcode):
     elif len(postcode) >= 6 and postcode[-4] != " ":
         return postcode[:-3] + " " + postcode[-3:]
     return postcode
-#if len(postcode) == 3 or len(postcode) == 4:
         
 
 def isResultEmpty(returned_results):
@@ -182,15 +179,13 @@ def searchPostcodesB(cursor):
     return isResultEmpty(returned_results)
     
     
-# returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
 def format_results(returned_results):
     i = "\n".join([str(item) for item in returned_results])
     return i 
 
-    
 
 if __name__ == "__main__":
-    with sqlite3.connect("phonebook_database.db") as conn: #with closes the connection after it ends
+    with sqlite3.connect("phonebook_database.db") as conn: #"with" closes the connection after it ends
         c = conn.cursor()
         menu(c)
         c.close()

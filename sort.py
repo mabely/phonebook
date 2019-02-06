@@ -39,21 +39,18 @@ def sort_p(returned_results):
 def sortSurname(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[1])
-#    print(y)
     print(format_results(y))
     return y
 
 def sortPostcode(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[5])
-#    print(y)
     print(format_results(y))
     return y
 
 def sortCity(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[3])
-#    print(y)
     print(format_results(y))
     return y
   
@@ -122,7 +119,6 @@ def sortPostcode2(returned_results):
 
 def sortDistance(returned_results):
     coords = currentLocation()
-#    print(coords)
     x = [result + (distance(coords["latitude"], coords["longitude"], result[-1], result[-2]), ) for result in returned_results]
     y = sorted(x, key=lambda result: result[-1])
     print(format_results(y))
@@ -138,7 +134,6 @@ def currentLocation():
     return {"longitude": lon, "latitude": lat} 
 
 
-# returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
 def format_results(returned_results):
     i = "\n".join([str(item) for item in returned_results])
     return i 
