@@ -46,7 +46,7 @@ def search_p():
             sort_p(returned_results)
         else:
             print('Sorry we did not recognise that, please try again.)')
-            # search_p()
+#            search_p() -- this needs to be modified due to "invalid literal for int() with base 10" response
     except ValueError:
             print('Please type a number.')
             search_p()
@@ -205,6 +205,8 @@ def searchPostcodesB():
         print(format_results(returned_results))
         return returned_results
     
+    
+    
 # returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
 def format_results(returned_results):
     i = "\n".join([str(item) for item in returned_results])
@@ -221,10 +223,3 @@ if __name__ == "__main__":
 c.close()
 #closing connection to db
 conn.close()
-
-
-'''
-1. results = empty list -> response & don't ask about sorting  -> search again
-
-'''
-

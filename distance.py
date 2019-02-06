@@ -15,10 +15,6 @@ from math import pi, sin, cos, sqrt, atan2
 #currentLon = -0.091014
 #print(getBusinessByType("EC3M 1AA", "Shoes"))
 
-# lon1 = getBusinessByType("OX7 3AA", "jewelery")[0][0]
-# print(lon1)
-# lat1 = getBusinessByType("OX7 3AA", "jewelery")[0][1]
-# print(lat1)
 
 def distance(lat1, lng1, lat2, lng2): 
     #return distance as meter if you want km distance, remove "* 1000" 

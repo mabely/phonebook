@@ -39,19 +39,22 @@ def sort_p(returned_results):
 def sortSurname(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[1])
-    print(y)
+#    print(y)
+    print(format_results(y))
     return y
 
 def sortPostcode(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[5])
-    print(y)
+#    print(y)
+    print(format_results(y))
     return y
 
 def sortCity(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[3])
-    print(y)
+#    print(y)
+    print(format_results(y))
     return y
   
 
@@ -97,25 +100,25 @@ def sort_b(returned_results):
 def sortBusType(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[7])
-    print(y)
+    print(format_results(y))
     return y
 
 def sortBusName(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[0])
-    print(y)
+    print(format_results(y))
     return y
 
 def sortCity2(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[2])
-    print(y)
+    print(format_results(y))
     return y
 
 def sortPostcode2(returned_results):
     x = list(returned_results)
     y = sorted(x, key=lambda s:s[4])
-    print(y)
+    print(format_results(y))
     return y
 
 
@@ -129,7 +132,7 @@ def sortDistance(returned_results):
 #    print(coords)
     x = [result + (distance(coords["latitude"], coords["longitude"], result[-1], result[-2]), ) for result in returned_results]
     y = sorted(x, key=lambda result: result[-1])
-    print(y)
+    print(format_results(y))
     return y
 
 # GETS USER LOCATION AND FINDS LONG AND LAT - FOR SORTING
@@ -140,3 +143,9 @@ def currentLocation():
     lat = r.json().get("result")["latitude"]
     lon = r.json().get("result")["longitude"]
     return {"longitude": lon, "latitude": lat} 
+
+
+# returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
+def format_results(returned_results):
+    i = "\n".join([str(item) for item in returned_results])
+    return i 
