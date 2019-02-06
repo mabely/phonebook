@@ -1,10 +1,5 @@
-import sqlite3
-import json 
 import requests
-
-conn = sqlite3.connect("phonebook_database.db")
-c = conn.cursor()
-
+from distance import distance
 
 def sort_p(returned_results):
     sort_yn = (input('''Do you want to sort? (y/n) ''')).lower()
@@ -15,7 +10,8 @@ def sort_p(returned_results):
 1 Surname
 2 Postcode
 3 City
-(1/2/3)
+4 Distance
+(Select 1/2/3/4)
 '''))
 
             if sort_options_p == 1:
@@ -24,6 +20,8 @@ def sort_p(returned_results):
                 sortPostcode(returned_results)
             elif sort_options_p == 3:
                 sortCity(returned_results)
+            elif sort_options_p == 4:
+                sortDistance(returned_results)
             else:
                 print('Sorry we did not recognise that, please try again.')
                 sort_p(returned_results)
@@ -69,7 +67,8 @@ def sort_b(returned_results):
 2 Business Name
 3 City
 4 Postcode
-(1/2/3/4)
+5 Distance
+(Select 1/2/3/4/5)
 '''))
 
             if sort_options_b == 1:
@@ -80,6 +79,8 @@ def sort_b(returned_results):
                 sortCity2(returned_results)
             elif sort_options_b == 4:
                 sortPostcode2(returned_results)
+            elif sort_options_b == 5:
+                sortDistance(returned_results)
             else:
                 print('Sorry we did not recognise that, please try again.')
                 sort_p(returned_results)
@@ -123,22 +124,19 @@ def sortPostcode2(returned_results):
 # sort_p(returned_results)
 # sort_b(returned_results)
 
-
-#closing cursor
-c.close()
-#closing connection to db
-conn.close()
-
-
+def sortDistance(returned_results):
+    coords = currentLocation()
+#    print(coords)
+    x = [result + (distance(coords["latitude"], coords["longitude"], result[-1], result[-2]), ) for result in returned_results]
+    y = sorted(x, key=lambda result: result[-1])
+    print(y)
+    return y
 
 # GETS USER LOCATION AND FINDS LONG AND LAT - FOR SORTING
-# def currentLocation():
-#     inputLocation = input("What's your current location? ")    
-#     inputLocation = inputLocation.replace(" ", "")
-#     r = requests.get(f"http://api.postcodes.io/postcodes/{inputLocation}")
-#     lat = r.json().get("result")["latitude"]
-#     lon = r.json().get("result")["longitude"]
-#     print(lon, lat)
-#     return lon, lat
-
-# # currentLocation()
+def currentLocation():
+    inputLocation = input("What's your current location? ")    
+    inputLocation = inputLocation.replace(" ", "")
+    r = requests.get(f"http://api.postcodes.io/postcodes/{inputLocation}")
+    lat = r.json().get("result")["latitude"]
+    lon = r.json().get("result")["longitude"]
+    return {"longitude": lon, "latitude": lat} 

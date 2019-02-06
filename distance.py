@@ -3,14 +3,16 @@ import json
 import requests
 from math import pi, sin, cos, sqrt, atan2
 
-#connects to db
-conn = sqlite3.connect("phonebook_database.db")
 
-#link to db with cursor
-c = conn.cursor()
+# def getBusinessByType(location, businessType):
+#     businessType = businessType.title()
+#     location = location.upper()
+#     c.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_type = ?", (location, businessType,))
+# #    return c.fetchall()
+#     return [item[8:10] for item in c.fetchall()]
 
-currentLat = 51.486879
-currentLon = -0.091014
+#currentLat = 51.486879
+#currentLon = -0.091014
 #print(getBusinessByType("EC3M 1AA", "Shoes"))
 
 # lon1 = getBusinessByType("OX7 3AA", "jewelery")[0][0]
@@ -32,10 +34,10 @@ def distance(lat1, lng1, lat2, lng2):
     ang = 2 * atan2(sqrt(val), sqrt(1-val)) 
     return round(radius * ang,2)
 
-print(distance(currentLat, currentLon, lat1, lon1),"km")
+#print(distance(currentLat, currentLon, lat1, lng1),"km")
 
 
-#closing cursor
-c.close()
-#closing connection to db
-conn.close()
+##closing cursor
+#c.close()
+##closing connection to db
+#conn.close()
