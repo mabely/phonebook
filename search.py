@@ -30,23 +30,29 @@ def search_p(cursor):
     (Select 1, 2 or 3)
     '''))
     try:
+        # None - kind of "empty" value, we do it because we don't want to forget creating this variable
+        # in all if elif else paths. It is useful when reading this variable later - we will not get an Exception
+        returned_results = None
         if search_options_p == 1:
             returned_results = searchLocNameP(cursor)
-            sort_p(returned_results)
         elif search_options_p == 2:
             returned_results = searchPostcodeNameP(cursor)
-            sort_p(returned_results)
         elif search_options_p == 3:
             returned_results = searchPostcodeP(cursor)
-            sort_p(returned_results)
         else:
             print('Sorry we did not recognise that, please try again.)')
 #            search_p() -- this needs to be modified due to "invalid literal for int() with base 10" response
+        
+        if returned_results is None: 
+            #all search functions can return None for no search results, we want user to search again
+            search_p(cursor)
+        else:
+            sort_p(returned_results)
+            
     except ValueError:
             print('Please type a number.')
             search_p(cursor)
 
-    # return search_options_p
 
 def search_b(cursor):
     search_options_p = int(input('''What do you want to search by?
@@ -58,27 +64,28 @@ def search_b(cursor):
     (Select 1/2/3/4/5)
     '''))
     try:
+        returned_results = None
         if search_options_p == 1:
             returned_results = searchTypeLocB(cursor)
-            sort_b(returned_results)
         elif search_options_p == 2:
             returned_results = searchNameCityB(cursor)
-            sort_b(returned_results)
         elif search_options_p == 3:
             returned_results = searchPostcodeTypeB(cursor)
-            sort_b(returned_results)
         elif search_options_p == 4:
             returned_results = searchPostcodeNameB(cursor)
-            sort_b(returned_results)
         elif search_options_p == 5:
             returned_results = searchPostcodesB(cursor)
-            sort_b(returned_results)
         else:
             print('Sorry we did not recognise that, please try again.')
-            # search_b(cursor)
+            
+        if returned_results is None:
+            search_b(cursor)
+        else:
+            sort_b(returned_results) 
+            
     except ValueError:
             print('Please enter a number.')
-            # search_b(cursor)
+             search_b(cursor)
 
 
 def correct_postcode(postcode):
@@ -88,6 +95,15 @@ def correct_postcode(postcode):
 #if len(postcode) == 3 or len(postcode) == 4:
         
 
+def isResultEmpty(returned_results):
+    if returned_results == []:
+        print("We could not find any matches. Please try again.")
+        return None 
+    else:
+        print(format_results(returned_results))
+        return returned_results
+
+
 ##### PERSON QUERIES #####
 def searchLocNameP(cursor):
     name = (input("Provide surname: ")).title()
@@ -96,12 +112,8 @@ def searchLocNameP(cursor):
     cursor.execute("SELECT * FROM phonebook_personal WHERE addressline2 = ? and last_name = ? LIMIT 50", (location, name,))
     returned_results = cursor.fetchall()
     
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_p()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
+
 
 
 def searchPostcodeNameP(cursor):
@@ -111,12 +123,7 @@ def searchPostcodeNameP(cursor):
     cursor.execute("SELECT * FROM phonebook_personal WHERE postcode = ? and last_name = ? LIMIT 50", (postcode, name,))
     returned_results = cursor.fetchall()
     
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_p()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
     
 
 def searchPostcodeP(cursor):
@@ -124,12 +131,8 @@ def searchPostcodeP(cursor):
 
     cursor.execute("SELECT * FROM phonebook_personal WHERE postcode = ? LIMIT 50", (postcode,))
     returned_results = cursor.fetchall()
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_p()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+
+    return isResultEmpty(returned_results)
 
 
 ##### BUSINESS QUERIES #####
@@ -140,12 +143,7 @@ def searchTypeLocB(cursor):
 
     returned_results = cursor.fetchall()
     
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_b()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
 
 
 def searchNameCityB(cursor):
@@ -154,13 +152,7 @@ def searchNameCityB(cursor):
     cursor.execute("SELECT * FROM phonebook_business WHERE addressline2 = ? and business_name = ? LIMIT 50", (location, businessName,))
     returned_results = cursor.fetchall()
 
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_b()
-    else:
-        print(format_results(returned_results))
-        return returned_results
-
+    return isResultEmpty(returned_results)
 
 def searchPostcodeTypeB(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
@@ -170,12 +162,7 @@ def searchPostcodeTypeB(cursor):
 
     returned_results = cursor.fetchall()
 
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_b()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
 
 
 def searchPostcodeNameB(cursor):
@@ -184,12 +171,7 @@ def searchPostcodeNameB(cursor):
     cursor.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_name = ? LIMIT 50", (postcode, businessName,))
     returned_results = cursor.fetchall()
 
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_b()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
 
 
 def searchPostcodesB(cursor):
@@ -200,12 +182,7 @@ def searchPostcodesB(cursor):
     # return [item[0] for item in cursor.fetchall()]
     returned_results = cursor.fetchall()
     
-    if returned_results == []:
-        print("We could not find any matches. Please try again.")
-        search_b()
-    else:
-        print(format_results(returned_results))
-        return returned_results
+    return isResultEmpty(returned_results)
     
     
 # returned_results = [('Saundra', 'Crutch', '51838 North Hill', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0259 246 0508', None, None), ('Wilbert', 'Watsham', '01 Eastlawn Drive', 'Upton', 'England', 'WF9 1QA', 'United Kingdom', '0296 420 4586', None, None)]
