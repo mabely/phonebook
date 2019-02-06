@@ -18,7 +18,8 @@ class Search_test(unittest.TestCase):
         self.assertEqual(correct_postcode("WF91QA"), "WF9 1QA")
         self.assertEqual(correct_postcode("SW19 1ZW"), "SW19 1ZW")
         self.assertEqual(correct_postcode("SW191ZW"), "SW19 1ZW")
-        self.assertEqual(correct_postcode(""), "")
+        self.assertEqual(correct_postcode(""), "%")
+        self.assertEqual(correct_postcode("NW6"), "NW6%")
 
 if __name__ == '__main__':
     unittest.main()
