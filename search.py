@@ -122,7 +122,7 @@ def searchPostcodeNameP(cursor):
     name = (input("Provide surname: ")).title()
     postcode = correct_postcode(input("Provide postcode: ")).upper()
 
-    cursor.execute("SELECT * FROM phonebook_personal WHERE postcode = ? and last_name = ? LIMIT 50", (postcode, name,))
+    cursor.execute("SELECT * FROM phonebook_personal WHERE postcode LIKE ? and last_name = ? LIMIT 50", (postcode, name,))
     returned_results = cursor.fetchall()
     
     return isResultEmpty(returned_results)
@@ -131,7 +131,7 @@ def searchPostcodeNameP(cursor):
 def searchPostcodeP(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
 
-    cursor.execute("SELECT * FROM phonebook_personal WHERE postcode = ? LIMIT 50", (postcode,))
+    cursor.execute("SELECT * FROM phonebook_personal WHERE postcode LIKE ? LIMIT 50", (postcode,))
     returned_results = cursor.fetchall()
 
     return isResultEmpty(returned_results)
