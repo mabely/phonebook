@@ -23,13 +23,13 @@ def menu(cursor):
 ##### SEARCH MENUS #####
 
 def search_p(cursor):
-    search_options_p = int(input('''What do you want to search by?
+    try:
+        search_options_p = int(input('''What do you want to search by?
     1 Surname & City
     2 Surname & Postcode
     3 Postcode
     (Select 1, 2 or 3)
     '''))
-    try:
         # None - kind of "empty" value, we do it because we don't want to forget creating this variable
         # in all if elif else paths. It is useful when reading this variable later - we will not get an Exception
         returned_results = None
@@ -40,7 +40,7 @@ def search_p(cursor):
         elif search_options_p == 3:
             returned_results = searchPostcodeP(cursor)
         else:
-            print('Sorry we did not recognise that, please try again.)')
+            print('Sorry we did not recognise that, please try again.')
 #            search_p() -- this needs to be modified due to "invalid literal for int() with base 10" response
         
         if returned_results is None: 
@@ -55,7 +55,8 @@ def search_p(cursor):
 
 
 def search_b(cursor):
-    search_options_p = int(input('''What do you want to search by?
+    try:
+        search_options_p = int(input('''What do you want to search by?
     1 Business Type & City
     2 Business Name & City
     3 Postcode & Business Type
@@ -63,7 +64,6 @@ def search_b(cursor):
     5 Postcode
     (Select 1/2/3/4/5)
     '''))
-    try:
         returned_results = None
         if search_options_p == 1:
             returned_results = searchTypeLocB(cursor)
@@ -85,11 +85,13 @@ def search_b(cursor):
             
     except ValueError:
             print('Please enter a number.')
-             search_b(cursor)
+            search_b(cursor)
 
 
 def correct_postcode(postcode):
-    if len(postcode) >= 6 and postcode[-4] != " ":
+    if len(postcode) < 6:
+        return postcode + "%"
+    elif len(postcode) >= 6 and postcode[-4] != " ":
         return postcode[:-3] + " " + postcode[-3:]
     return postcode
 #if len(postcode) == 3 or len(postcode) == 4:
@@ -157,9 +159,7 @@ def searchNameCityB(cursor):
 def searchPostcodeTypeB(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
     businessType = (input("Provide business type: ")).title()
-    cursor.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_type = ? LIMIT 50", (postcode, businessType,))
-#    cursor.execute('SELECT * FROM phonebook_business WHERE postcode LIKE '+postcode+'% AND business_type LIKE '+ businessType + '% LIMIT 50')
-
+    cursor.execute("SELECT * FROM phonebook_business WHERE postcode LIKE ? and business_type = ? LIMIT 50", (postcode, businessType,))
     returned_results = cursor.fetchall()
 
     return isResultEmpty(returned_results)
@@ -168,7 +168,7 @@ def searchPostcodeTypeB(cursor):
 def searchPostcodeNameB(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
     businessName = (input("Provide business name: ")).title()
-    cursor.execute("SELECT * FROM phonebook_business WHERE postcode = ? and business_name = ? LIMIT 50", (postcode, businessName,))
+    cursor.execute("SELECT * FROM phonebook_business WHERE postcode LIKE ? and business_name = ? LIMIT 50", (postcode, businessName,))
     returned_results = cursor.fetchall()
 
     return isResultEmpty(returned_results)
@@ -176,10 +176,7 @@ def searchPostcodeNameB(cursor):
 
 def searchPostcodesB(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
-    cursor.execute(f"SELECT * FROM phonebook_business WHERE postcode = ? LIMIT 50", (postcode,))
-#    return first element of each row to remove tuples from the list
-#    I have now a list of strings instead of list of tuples with strings
-    # return [item[0] for item in cursor.fetchall()]
+    cursor.execute(f"SELECT * FROM phonebook_business WHERE postcode LIKE ? LIMIT 50", (postcode,))
     returned_results = cursor.fetchall()
     
     return isResultEmpty(returned_results)
