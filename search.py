@@ -27,7 +27,8 @@ def search_p(cursor):
     1 Surname & City
     2 Surname & Postcode
     3 Postcode
-    (Select 1, 2 or 3)
+    4 City
+    (Select 1, 2, 3 or 4)
     '''))
         # None - kind of "empty" value, we do it because we don't want to forget creating this variable
         # in all if elif else paths. It is useful when reading this variable later - we will not get an Exception
@@ -38,6 +39,8 @@ def search_p(cursor):
             returned_results = searchPostcodeNameP(cursor)
         elif search_options_p == 3:
             returned_results = searchPostcodeP(cursor)
+        elif search_options_p == 4:
+            returned_results = searchCityP(cursor)
         else:
             print('Sorry we did not recognise that, please try again.')
         
@@ -129,6 +132,14 @@ def searchPostcodeP(cursor):
     postcode = correct_postcode(input("Provide postcode: ")).upper()
 
     cursor.execute("SELECT * FROM phonebook_personal WHERE postcode LIKE ? LIMIT 50", (postcode,))
+    returned_results = cursor.fetchall()
+
+    return isResultEmpty(returned_results)
+
+def searchCityP(cursor):
+    location = (input("Provide city: ")).title()
+
+    cursor.execute("SELECT * FROM phonebook_personal WHERE addressline2 = ? LIMIT 50", (location,))
     returned_results = cursor.fetchall()
 
     return isResultEmpty(returned_results)
